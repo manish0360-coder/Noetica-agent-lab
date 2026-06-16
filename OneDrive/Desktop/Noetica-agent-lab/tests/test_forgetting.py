@@ -91,3 +91,17 @@ def test_record_recall_matches_half_life_point():
 
     at_half_life = recall_for_record(record, now=reviewed + timedelta(days=hl))
     assert at_half_life == pytest.approx(0.5, abs=0.01)
+
+def test_naive_now_does_not_crash():
+    from datetime import datetime
+    reviewed = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    record = {"mastery": 0.5, "last_reviewed_at": reviewed.isoformat()}
+    r = recall_for_record(record, now=datetime(2026, 1, 6))  # naive!
+    assert 0.0 <= r <= 1.0
+
+def test_recall_with_status_distinguishes_cases():
+    from phase2_memory.forgetting import recall_with_status
+    never = {"mastery": 0.1, "last_reviewed_at": None}
+    reviewed = {"mastery": 0.5, "last_reviewed_at": "2026-01-01T00:00:00+00:00"}
+    assert recall_with_status(never)["basis"] == "never_reviewed"
+    assert recall_with_status(reviewed)["basis"] == "decayed"

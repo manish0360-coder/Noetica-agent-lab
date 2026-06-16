@@ -87,5 +87,24 @@ def recall_for_record(record: dict, now: datetime | None = None) -> float:
         return mastery   # never reviewed: no clock to decay from
 
     now = now or datetime.now(timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    # Defensive: if a caller passes a naive datetime, assume UTC rather than crash.
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
     days_elapsed = (now - _parse_iso(last)).total_seconds() / 86400.0  # seconds → days
     return recall_probability(mastery, days_elapsed)
+
+def recall_with_status(record: dict, now=None) -> dict:
+    """Return recall plus whether it came from decay or a never-reviewed record."""
+
+    if record.get("last_reviewed_at") is None:
+        return {
+            "recall": record["mastery"],
+            "basis": "never_reviewed",
+        }
+
+    return {
+        "recall": recall_for_record(record, now),
+        "basis": "decayed",
+    }
