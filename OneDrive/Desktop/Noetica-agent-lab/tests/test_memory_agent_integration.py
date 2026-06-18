@@ -6,6 +6,11 @@ Normalization and forgetting are real (already banked). We test the WIRING
 and the two guard decisions: correct=None and concept=unknown.
 """
 import pytest
+
+pytestmark = pytest.mark.skip(
+    reason="analyze() superseded by update_from_verdict (Verdict migration, Option D). "
+           "Retained for historical reference; remove when extraction helpers are deleted in Step 4."
+)
 import phase2_memory.memory_agent as ma
 from phase2_memory.memory_agent import MemoryAgent
 from phase2_memory.knowledge_state import KnowledgeState, INITIAL_MASTERY

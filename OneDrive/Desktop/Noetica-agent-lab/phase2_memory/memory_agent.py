@@ -74,51 +74,61 @@ def _flagged_record(concept, correct, misconception, reason):
     }
 
 
-class MemoryAgent:
-    """Coordinates extraction → normalization → store → forgetting.
 
-    Owns sequencing and two guards only:
-      - correct is None  → flag, skip store
-      - concept unknown  → flag, skip store
-    All real logic lives in the subsystems it calls.
+from phase2_memory.verdict import Verdict
+
+
+def _flagged_record(verdict, concept, reason):
+    """A record produced but NOT committed to the store."""
+    return {
+        "concept": concept,
+        "correct": verdict.correct,
+        "mastery": None,
+        "recall": None,
+        "basis": None,
+        "misconception": verdict.misconception,
+        "confidence": verdict.confidence,
+        "source": verdict.source,
+        "flagged": True,
+        "flag_reason": reason,
+    }
+
+
+class MemoryAgent:
+    """Consumes a Verdict and updates learner state.
+
+    Pure and deterministic — no LLM. Owns sequencing only:
+      normalize concept → (guard: unknown) → store.update → recall → enrich.
+    The store owns mastery math; the forgetting model owns recall.
     """
 
     def __init__(self, store):
         self.store = store
 
-    def analyze(self, question: str, student_answer: str) -> dict:
-        # [1] Extraction (mocked in tests, real qwen2.5:3b in production)
-        ext = extract_answer_analysis(question, student_answer)
-        correct       = ext["correct"]
-        misconception = ext["misconception"]
+    def update_from_verdict(self, verdict: Verdict) -> dict:
+        # [1] Normalize the concept to a canonical curriculum key.
+        concept = normalize_concept(verdict.concept)
 
-        # Guard 1: could not determine correctness → never update the store
-        if correct is None:
-            return _flagged_record(ext["raw_concept"], None, misconception,
-                                   "extraction_failed_or_no_correctness")
-
-        # [2] Normalization
-        concept = normalize_concept(ext["raw_concept"])
-
-        # Guard 2: off-curriculum → never write a junk row
+        # Guard: off-curriculum → flag, write nothing.
         if concept == UNKNOWN:
-            return _flagged_record(UNKNOWN, correct, misconception,
-                                   "concept_not_in_curriculum")
+            return _flagged_record(verdict, UNKNOWN, "concept_not_in_curriculum")
 
-        # [3] Store owns the mastery math
-        record = self.store.update(concept, bool(correct))
+        # [2] Store owns the mastery math.
+        record = self.store.update(concept, verdict.correct)
 
-        # [4] Forgetting model owns recall
+        # [3] Forgetting model owns recall.
         recall = recall_with_status(record)
 
-        # [5] Assemble enriched record (sequencing only)
+        # [4] Assemble enriched record (sequencing only).
         return {
             "concept":       concept,
-            "correct":       bool(correct),
+            "correct":       verdict.correct,
             "mastery":       record["mastery"],
             "recall":        recall["recall"],
             "basis":         recall["basis"],
-            "misconception": misconception,
+            "misconception": verdict.misconception,
+            "confidence":    verdict.confidence,
+            "source":        verdict.source,
             "flagged":       False,
             "flag_reason":   None,
         }
