@@ -62,6 +62,12 @@ Noetica is a research-oriented AI engineering laboratory focused on building cog
 
 ---
 
+
+## 🌐 Live Portfolio
+
+**Portfolio:** https://manish-portfolio-one-gamma.vercel.app
+
+
 # 📸 Project Snapshot
 
 ## 🗂️ Repository Structure
