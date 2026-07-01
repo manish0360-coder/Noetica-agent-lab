@@ -57,3 +57,19 @@ fail-closed.
 **Operational note.** The git index is kept on reliable local storage (not the working
 mount) to avoid index corruption observed on the FUSE mount during transformation; no
 history impact.
+
+## DN-5 — Freeze Platform Engineering Roadmap v1
+**Status:** Accepted.
+**Decision.** The Platform Engineering implementation order is frozen as
+`docs/roadmap/PLATFORM_ENGINEERING_ROADMAP_v1.md`: PE-1..PE-21 ordered strictly by
+dependency depth (lowest first), plus gated PE-G1..G5. Tag: `pe-roadmap-v1`.
+**Rationale.** Prevents ad-hoc, feature-popularity ordering; guarantees every mechanism is
+built on already-verified foundations (Law 8, Principle 4). The order is a valid topological
+sort of the dependency DAG (no cycles), mirroring the Code-Flow invariant (Law 9).
+**Alternatives rejected.** Top-down/feature-first (forces stubs + rework); breadth-first
+(would build Context/Reasoning before Memory/Episode); experiment-first (stubs the very
+mechanisms §1.7 must measure).
+**Consequences.** PE-4 is Observability. Milestones proceed one at a time with per-milestone
+verification (mypy --strict, unit tests, boundary fail-closed, interface conformance).
+Gated milestones are built only when their gate is met (§11.8). Changes require a superseding
+decision (§11.7).

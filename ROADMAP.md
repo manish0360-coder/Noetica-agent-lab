@@ -47,3 +47,15 @@ its gate is a §11.8 deviation requiring a recorded justification.
 Strict acyclic dependency DAG (Law 9); mechanism vs content (Law 3); no homunculus;
 provenance/observability from the first commit (Principle 7); every milestone yields a
 running system (§13.6); each milestone hardens the last, never a rewrite.
+
+---
+
+## Platform Engineering Roadmap v1 (FROZEN)
+
+The Phase-1 sketch above is superseded by the complete, dependency-ordered, frozen
+roadmap: **`docs/roadmap/PLATFORM_ENGINEERING_ROADMAP_v1.md`** (PE-1..PE-21 + gated
+PE-G1..G5, with dependency graph, acyclicity proof, and ordering justification).
+
+Done: **PE-1** interfaces, **PE-2** State Substrate, **PE-3** Provenance & Lineage.
+Next by dependency depth: **PE-4** Observability. The order is frozen; changes require a
+superseding decision (§11.7).
