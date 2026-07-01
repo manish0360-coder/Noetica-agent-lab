@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from noetica.provenance.identity import (
     PROV_SCHEMA_VERSION,
+    canonical_sha256,
     content_hash,
     deserialize_provenance,
     serialize_provenance,
@@ -24,6 +25,7 @@ __all__ = [
     "ProvenanceLedger",
     "LineageNode",
     "content_hash",
+    "canonical_sha256",
     "serialize_provenance",
     "deserialize_provenance",
     "serialize_node",

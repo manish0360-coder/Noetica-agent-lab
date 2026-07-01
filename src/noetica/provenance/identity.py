@@ -1,16 +1,14 @@
 """Provenance identity — canonical serialization + content hash.
 
-Purpose: the authoritative, versioned wire form for a `Provenance` value and its
-    deterministic content hash (stable identity for a lineage node). Separates
-    reproducible identity from mutable metadata (§11.7).
+Purpose: the authoritative, versioned wire form for a `Provenance` value, a reusable
+    canonical SHA-256 over any JSON-safe structure, and the provenance content hash
+    (stable identity for a lineage node). Separates reproducible identity from mutable
+    metadata (§11.7).
 Owner: Noetica (Layer 2).
-Consumer: the State Substrate (records provenance) and the ProvenanceLedger; Velith;
+Consumer: State Substrate; ProvenanceLedger; Episode & Episode Store (PE-4); Velith;
     Mini Prometheus.
-Constitution: §6.2 (provenance first-class); §11.7 (content-hash identity); Law 21.
+Constitution: §6.2; §11.7 (content-hash identity); Law 21.
 Future implementation owner: Noetica.
-
-No Memory/Episode/Knowledge/Runtime/Planner/Router logic. Operates only on the
-`Provenance` value type from the frozen interface surface.
 """
 from __future__ import annotations
 
@@ -21,6 +19,16 @@ from typing import Any, Mapping
 from noetica.interfaces.provenance import Provenance
 
 PROV_SCHEMA_VERSION = "0.1.0"
+
+
+def canonical_sha256(obj: Any) -> str:
+    """Deterministic SHA-256 over the canonical JSON of a JSON-safe structure.
+
+    Canonical form: sorted keys, tight separators, UTF-8. The single shared hashing
+    primitive for reproducible identity across the platform (§11.7).
+    """
+    payload = json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def serialize_provenance(p: Provenance) -> dict[str, Any]:
@@ -45,11 +53,5 @@ def deserialize_provenance(d: Mapping[str, Any]) -> Provenance:
 
 
 def content_hash(p: Provenance) -> str:
-    """Deterministic sha256 over the canonical provenance form — the lineage node id.
-
-    Stable across runs given identical provenance (§11.7 reproducible identity).
-    """
-    payload = json.dumps(
-        serialize_provenance(p), sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    """Deterministic content hash of a Provenance — the lineage node id (§11.7)."""
+    return canonical_sha256(serialize_provenance(p))
