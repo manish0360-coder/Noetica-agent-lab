@@ -68,3 +68,22 @@ and all four moves were re-verified as `R100` renames before commit.
 | 22 | ADD | *(new)* | `reference/miniflywire/README.md` | Noetica (about MiniFlyWire) | §4.1; Law 4; Law 7; §11.9 | Ownership + no-import + promotion-by-re-implementation declaration. | `62d7af5` |
 
 **Deletions in `62d7af5` (not documents):** 8 empty research stubs `02_hypotheses.md`…`09_decisions.md`; stray diagnostic artifact `_rentest2`; unused `docs/miniflywire/.gitkeep` scaffold (superseded by `reference/miniflywire/`).
+
+---
+
+## M3.5 Task 1 — Archive MiniNoetica legacy code to reference/mininoetica — commit `918f4b0`
+
+> **Ownership:** canonical owner **MiniNoetica** (D11). Reference/read-only; Noetica
+> never owns or imports; promotion only by validated re-implementation. LLM-as-judge
+> (`judge.py`) permanently barred from promotion (Law 7). See `reference/mininoetica/README.md`.
+
+| # | Op | Original Path | New Path | Owner | Constitution Reference | Reason | Git Commit |
+|---|----|---------------|----------|-------|------------------------|--------|-----------|
+| 23 | ARCHIVE (ref) | `core/` (agent.py, llm.py, logger.py) | `reference/mininoetica/core/` | MiniNoetica | D11; Law 3/4/9 | Education Agent-Zero loop + adapters; seeds re-implemented upward only. | `918f4b0` |
+| 24 | ARCHIVE (ref) | `phase2_memory/` (10 modules) | `reference/mininoetica/phase2_memory/` | MiniNoetica | D11; Law 5; Law 7 | Student-modeling memory; `judge.py` = barred anti-pattern. | `918f4b0` |
+| 25 | ARCHIVE (ref) | `agent_zero/` (step1–9) | `reference/mininoetica/agent_zero/` | MiniNoetica | D11; Law 4 | Learning-archive probe scripts. | `918f4b0` |
+| 26 | ARCHIVE (ref) | `tests/test_*.py`, `tests/__init__.py` | `reference/mininoetica/tests/` | MiniNoetica | D11; §11.9 | Education tests; excluded from platform suite. | `918f4b0` |
+| 27 | ARCHIVE (ref) | `data/agent_runs.jsonl` | `reference/mininoetica/data/agent_runs.jsonl` | MiniNoetica | D11; Law 21 | Education run logs (unversioned). | `918f4b0` |
+| 28 | ARCHIVE (ref) | `docs/project_state.md` | `reference/mininoetica/docs/project_state.md` | MiniNoetica | D11; Amendment A1 | Education-era state; other-layer doc out of Noetica `docs/`. | `918f4b0` |
+| 29 | ADD | *(new)* | `reference/mininoetica/README.md` | Noetica (about MiniNoetica) | D11; §4.1; Law 4/7 | Ownership + no-import + promotion-by-re-implementation declaration. | `918f4b0` |
+| 30 | MODIFY | `pytest.ini` | `pytest.ini` | Noetica | §11.9; Law 4/9 | testpaths=tests; norecursedirs=reference (reference not executable platform code). | `918f4b0` |
