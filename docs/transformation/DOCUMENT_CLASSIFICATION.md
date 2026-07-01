@@ -87,3 +87,22 @@ and all four moves were re-verified as `R100` renames before commit.
 | 28 | ARCHIVE (ref) | `docs/project_state.md` | `reference/mininoetica/docs/project_state.md` | MiniNoetica | D11; Amendment A1 | Education-era state; other-layer doc out of Noetica `docs/`. | `918f4b0` |
 | 29 | ADD | *(new)* | `reference/mininoetica/README.md` | Noetica (about MiniNoetica) | D11; §4.1; Law 4/7 | Ownership + no-import + promotion-by-re-implementation declaration. | `918f4b0` |
 | 30 | MODIFY | `pytest.ini` | `pytest.ini` | Noetica | §11.9; Law 4/9 | testpaths=tests; norecursedirs=reference (reference not executable platform code). | `918f4b0` |
+
+---
+
+## M3.5 Task 2 — CI Boundary Enforcement (enforcement tooling, not migrations)
+
+New files (constitutional enforcement per §11.10 — NOT platform mechanisms):
+
+| Op | Path | Purpose | Constitution Reference |
+|----|------|---------|------------------------|
+| ADD | `tools/check_boundaries.py` | Static import/packaging checks; fail-closed (exit 1) on violation. | Law 4/9/12; §11.10; D11 |
+| ADD | `tests/architecture/test_constitution_boundaries.py` | Pytest wrappers so the suite fails on any boundary violation. | §11.10 |
+| ADD | `.github/workflows/constitution.yml` | CI gate: runs the checker + architecture tests on push/PR. | §11.9/§11.10 |
+| ADD | `tools/README.md` | Declares these are enforcement, not platform features. | §11.10 |
+
+Enforced: (1) `src/noetica` imports nothing from `reference/`; (2) no legacy/domain
+import (`core`, `phase2_memory`, `agent_zero`, `velith`, `mini_prometheus`); (3) package
+DAG holds (platform + platform tests never import reference); (4) `reference/` is
+excluded from the pytest suite (reference is not executable platform code). Verified
+fail-closed against injected violations.

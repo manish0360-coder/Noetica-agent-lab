@@ -1,0 +1,22 @@
+name: Constitution Boundary Enforcement
+
+# Mechanically enforces the Engineering Constitution (Laws 4/9/12/19, §11.9/§11.10).
+# The build fails on any boundary violation. Enforcement only — no platform code here.
+on:
+  push:
+  pull_request:
+
+jobs:
+  boundaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Constitutional boundary checks (fail-closed)
+        run: python tools/check_boundaries.py
+      - name: Architecture enforcement tests
+        run: |
+          python -m pip install --quiet pytest
+          python -m pytest tests/architecture -q
