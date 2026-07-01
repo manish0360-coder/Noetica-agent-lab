@@ -1,8 +1,32 @@
-"""Noetica · observability (Constitution §6.17).
+"""Noetica · observability — Observability & Logging (§6.17).
 
-Observability & Logging — structured logs, metrics, traces.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+Structured logging, metrics, and traces — the operational-visibility substrate the
+platform emits through (non-negotiable with provenance, Principle 7). PE-5 provides typed
+records and default implementations (in-memory + JSON-line stream) with a `span()` trace
+helper. Domain-agnostic; depends only on the frozen interfaces.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.observability.defaults import (
+    InMemoryObservability,
+    ObservabilityBase,
+    StreamObservability,
+)
+from noetica.observability.records import (
+    SCHEMA_VERSION,
+    LogEvent,
+    MetricSample,
+    serialize_log_event,
+    serialize_metric,
+)
+
+__all__ = [
+    "InMemoryObservability",
+    "StreamObservability",
+    "ObservabilityBase",
+    "LogEvent",
+    "MetricSample",
+    "serialize_log_event",
+    "serialize_metric",
+    "SCHEMA_VERSION",
+]
