@@ -73,3 +73,21 @@ mechanisms §1.7 must measure).
 verification (mypy --strict, unit tests, boundary fail-closed, interface conformance).
 Gated milestones are built only when their gate is met (§11.8). Changes require a superseding
 decision (§11.7).
+
+## DN-6 — Platform Engineering Roadmap v1.1 (supersedes DN-5 ordering)
+**Status:** Accepted. **Supersedes:** DN-5 (ordering only).
+**Decision.** Adopt `docs/roadmap/PLATFORM_ENGINEERING_ROADMAP_v1.1.md`. Move **Episode &
+Episode Store to PE-4** (immediately after State + Provenance); shift the independent
+Tier-1 services to PE-5..PE-9 ordered by first consumer (Observability, Budget, Data
+Contract, Reference Verifier, Guardrails). Tier-2+ (PE-10..PE-21) and the gated set are
+unchanged. Tag: `pe-roadmap-v1.1` (v1 retained for history, §11.6).
+**Rationale.** Dependency review found Episode's only hard platform prerequisite is
+Provenance (done); Observability and Episode are incomparable in the DAG, so v1 ordered
+them by cross-cutting importance, not dependency. v1 also overstated Episode's dependency
+on DataContract (Episode carries schema_version; the framework isn't required to build the
+record). v1.1 orders strictly by true dependency, ties broken by first-consumer proximity
+(Law 8). Remains a valid topological sort (no cycles, Law 9).
+**Alternatives rejected.** Keeping Observability first (importance-based, not dependency);
+depth-only tiebreak (does not reflect that Episode is dependency-ready now and is the
+cohesive data-spine continuation).
+**Consequences.** PE-4 is Episode & Episode Store. Per-milestone verification unchanged.

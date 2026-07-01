@@ -53,9 +53,9 @@ running system (§13.6); each milestone hardens the last, never a rewrite.
 ## Platform Engineering Roadmap v1 (FROZEN)
 
 The Phase-1 sketch above is superseded by the complete, dependency-ordered, frozen
-roadmap: **`docs/roadmap/PLATFORM_ENGINEERING_ROADMAP_v1.md`** (PE-1..PE-21 + gated
+roadmap: **`docs/roadmap/PLATFORM_ENGINEERING_ROADMAP_v1.1.md (FROZEN, supersedes v1)`** (PE-1..PE-21 + gated
 PE-G1..G5, with dependency graph, acyclicity proof, and ordering justification).
 
 Done: **PE-1** interfaces, **PE-2** State Substrate, **PE-3** Provenance & Lineage.
-Next by dependency depth: **PE-4** Observability. The order is frozen; changes require a
+Next by dependency depth: **PE-4** Episode & Episode Store (v1.1 review moved Episode ahead of the cross-cutting services; only hard dep is Provenance). The order is frozen; changes require a
 superseding decision (§11.7).
