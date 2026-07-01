@@ -126,3 +126,21 @@ fail-closed against injected violations.
 | 37 | ARCHIVE (ref) | `M2_IMPLEMENTATION_HANDOFF.md` | `reference/velith/M2_IMPLEMENTATION_HANDOFF.md` | Velith | §2.3 | Velith M2 handoff. | `068e63c` |
 | 38 | ARCHIVE (ref) | `NOTES.md` | `reference/velith/NOTES.md` | Velith | §2.3; §13.4 | Velith M2 capability-gating notes. | `068e63c` |
 | 39 | ADD | *(new)* | `reference/velith/README.md` | Noetica (about Velith) | §4.2; Law 8; Amendment A1 | Ownership + no-import + extraction-only declaration. | `068e63c` |
+
+---
+
+## M6 — Canonical Noetica docs + cleanup — commit `b90c54f`
+
+| # | Op | Original Path | New Path | Owner | Constitution Reference | Reason | Git Commit |
+|---|----|---------------|----------|-------|------------------------|--------|-----------|
+| 40 | REWRITE | `README.md` (education) | `README.md` (Noetica platform) | Noetica | Law 18; P.1 | Canonical platform README (parity with reality). | `b90c54f` |
+| 41 | ARCHIVE (ref) | `README.md` (old content) | `reference/mininoetica/README_EDUCATION.md` | MiniNoetica | D11; Amendment A1 | Preserve education README with its owner. | `b90c54f` |
+| 42 | AUTHOR | *(0-byte)* `ROADMAP.md` | `ROADMAP.md` | Noetica | §13.6; Law 8 | Canonical Noetica Roadmap v1. | `b90c54f` |
+| 43 | AUTHOR | *(new)* | `docs/decisions/DECISIONS.md` | Noetica | §11.7 | Noetica ADR ledger (DN-1..DN-4). | `b90c54f` |
+| 44 | AUTHOR | *(new)* | `docs/registry/PRIMITIVE_REGISTRY.md` | Noetica | §11.5 | Primitive Registry (declared-empty + candidate seeds). | `b90c54f` |
+| 45 | DELETE | `ARCHITECTURE.md` (0-byte) | — | Noetica | Law 18 | Constitution is the architecture; empty stub invites drift. | `b90c54f` |
+| 46 | DELETE | `RESEARCH.md` (0-byte) | — | Noetica | Amendment A1 | Research lives in reference/miniflywire. | `b90c54f` |
+| 47 | DELETE | `assets/` (empty dirs) | — | MiniNoetica | — | Empty education asset dirs; no tracked files. | `b90c54f` |
+
+**Transformation complete.** Root now holds only Noetica-owned files; all other-layer
+material is under `reference/<layer>/` with ownership READMEs; boundaries CI-enforced.
