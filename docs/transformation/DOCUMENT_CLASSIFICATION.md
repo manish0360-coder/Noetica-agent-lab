@@ -106,3 +106,23 @@ import (`core`, `phase2_memory`, `agent_zero`, `velith`, `mini_prometheus`); (3)
 DAG holds (platform + platform tests never import reference); (4) `reference/` is
 excluded from the pytest suite (reference is not executable platform code). Verified
 fail-closed against injected violations.
+
+---
+
+## M5 — Archive Velith-owned documentation to reference/velith — commit `068e63c`
+
+> **Ownership:** canonical owner **Velith** (separate repository, Layer 3). Reference
+> copies only; Noetica never owns or imports; mechanisms enter Noetica by extraction
+> (Law 8, N.3), never by import. See `reference/velith/README.md`.
+
+| # | Op | Original Path | New Path | Owner | Constitution Reference | Reason | Git Commit |
+|---|----|---------------|----------|-------|------------------------|--------|-----------|
+| 31 | ARCHIVE (ref) | `DECISIONS.md` (D1–D21) | `reference/velith/DECISIONS.md` | Velith | §2.3; N.3; §4.2 | Velith ADR ledger; mechanisms extracted to Noetica, not imported. | `068e63c` |
+| 32 | ARCHIVE (ref) | `PROJECT_STATE.md` | `reference/velith/PROJECT_STATE.md` | Velith | §2.3; §13.7 | Velith milestone state. | `068e63c` |
+| 33 | ARCHIVE (ref) | `M0_SPEC.md` | `reference/velith/M0_SPEC.md` | Velith | §2.3; §13.7 | Velith M0 spec. | `068e63c` |
+| 34 | ARCHIVE (ref) | `M1_SPEC.md` | `reference/velith/M1_SPEC.md` | Velith | §2.3; §7.5 | Velith M1 spec (propose->verify->log). | `068e63c` |
+| 35 | ARCHIVE (ref) | `M1_IMPLEMENTATION_HANDOFF.md` | `reference/velith/M1_IMPLEMENTATION_HANDOFF.md` | Velith | §2.3 | Velith M1 handoff. | `068e63c` |
+| 36 | ARCHIVE (ref) | `M2_SPEC.md` | `reference/velith/M2_SPEC.md` | Velith | §2.3 | Velith M2 spec (hardened verifier). | `068e63c` |
+| 37 | ARCHIVE (ref) | `M2_IMPLEMENTATION_HANDOFF.md` | `reference/velith/M2_IMPLEMENTATION_HANDOFF.md` | Velith | §2.3 | Velith M2 handoff. | `068e63c` |
+| 38 | ARCHIVE (ref) | `NOTES.md` | `reference/velith/NOTES.md` | Velith | §2.3; §13.4 | Velith M2 capability-gating notes. | `068e63c` |
+| 39 | ADD | *(new)* | `reference/velith/README.md` | Noetica (about Velith) | §4.2; Law 8; Amendment A1 | Ownership + no-import + extraction-only declaration. | `068e63c` |
