@@ -111,3 +111,26 @@ Post-M8: canonical Noetica platform with enforced boundaries and a designed inte
 ## APPROVAL / EXECUTION
 
 Per owner directive I now **execute M0**, report, and **wait**. One step per turn thereafter. Law 22: I build and recommend; you ratify.
+
+---
+
+## AMENDMENT A1 (post-M3) — Cross-layer document ownership rule
+
+Ratified while executing M3 (owner directive). **Binding on all remaining migrations.**
+
+**Rule.** Documentation (or code) owned by a layer *other than Noetica* — MiniFlyWire
+research, Velith engineering docs, MiniNoetica education material — is placed under
+`reference/<layer>/`, **never** under `docs/` (which is Noetica-owned). Each
+`reference/<layer>/` carries a `README.md` declaring: canonical owner, that these are
+reference/synchronized copies, that Noetica never owns the material, that no
+implementation may import `reference/<layer>`, and that promotion occurs only by
+validated re-implementation. Cite the governing sections (§4.1 Knowledge Flow, Law 4,
+Law 7, §11.9, §9.2).
+
+**Consequences for the plan.**
+- **M3 (revised, done):** MiniFlyWire corpus → `reference/miniflywire/` (not
+  `docs/miniflywire/`). The `docs/miniflywire/` scaffold is removed.
+- **M4 (MiniNoetica):** `reference/mininoetica/` gains an equivalent ownership `README.md`.
+- **M5 (Velith docs):** `reference/velith/` gains an equivalent ownership `README.md`.
+- `docs/` holds **only Noetica-owned** documentation (constitution, decisions, registry,
+  vision, audits, transformation).
