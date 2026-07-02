@@ -1,8 +1,12 @@
-"""Noetica · verification (Constitution §6.11).
+"""Noetica · verification — Verification protocol support (§6.11).
 
-Verification Protocol — Verifier interface + Verdict type + reference/fake verifier (Law 20). Oracle stays in the domain.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+Noetica owns the verification PROTOCOL (`Verifier`/`Verdict`, in the interface surface);
+the concrete ORACLE is domain-owned (Law 15). PE-8 provides only the deterministic
+`ReferenceVerifier` — the fake verifier Noetica self-tests run against (Law 20), never a
+real domain oracle. No engineering/manufacturing/heuristic/simulation logic.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.verification.reference import ReferenceVerifier, always
+
+__all__ = ["ReferenceVerifier", "always"]
