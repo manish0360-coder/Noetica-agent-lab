@@ -1,8 +1,13 @@
-"""Noetica · guardrails (Constitution §6.16).
+"""Noetica · guardrails — Safety Policy Engine (§6.16, Law 17).
 
-Guardrails / Safety Policy Engine — enforces the immutable human-oversight boundary.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+Noetica owns the engine that enforces policy, including the IMMUTABLE human-oversight
+boundary the system may never modify (Law 17). Domains supply domain-policy content. PE-9
+provides `GuardrailEngine` (evaluates policies, returns decisions, never executes actions)
+and the `Policy`/`FunctionPolicy` abstraction. No reasoning/planning/runtime/domain rules.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.guardrails.engine import GuardrailEngine
+from noetica.guardrails.policy import FunctionPolicy, Policy, allow_all, deny_all
+
+__all__ = ["GuardrailEngine", "Policy", "FunctionPolicy", "allow_all", "deny_all"]
