@@ -1,8 +1,26 @@
-"""Noetica · evaluation (Constitution §6.10).
+"""Noetica · evaluation — Evaluation Harness & Held-out Lock (§6.10).
 
-Evaluation Harness — arms, held-out lock, metrics, frozen-evaluation discipline.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+The experiment machinery: arms, a mechanically-locked immutable held-out set, frozen
+benchmark execution, provenance recording, and integrity enforcement. It measures
+mechanisms and NEVER improves them during execution. PE-17 provides `EvaluationHarness`,
+`Arm`, `HeldoutDataset`. Self-tests use only the ReferenceVerifier (Law 20). No reasoning/
+planning/optimization/tuning/domain-eval/engineering-oracles.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.evaluation.arm import Arm
+from noetica.evaluation.harness import (
+    DuplicateArmError,
+    EvaluationHarness,
+    FrozenEvaluationViolation,
+)
+from noetica.evaluation.heldout import HeldoutDataset, HeldoutViolation
+
+__all__ = [
+    "EvaluationHarness",
+    "Arm",
+    "HeldoutDataset",
+    "HeldoutViolation",
+    "FrozenEvaluationViolation",
+    "DuplicateArmError",
+]
