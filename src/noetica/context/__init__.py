@@ -1,8 +1,14 @@
-"""Noetica · context (Constitution §6.6).
+"""Noetica · context — Context Engine (§6.6).
 
-Context Engine — working-set assembly + window budgeting for a single inference.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+Working-set assembly + window budgeting for a SINGLE inference — a momentary combination of
+State, Memory, and Knowledge under an explicit policy and token budget (distinct from
+Memory persistence and the Knowledge store, §6.20). PE-16 provides `ContextEngine`,
+`ContextPolicy`, and `ContextItem`. No reasoning/planning/reflection/retrieval-optimization/
+ranking/prompt-construction/domain logic; owns no persistence.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.context.engine import ContextEngine
+from noetica.context.models import SCHEMA_VERSION, ContextItem, ContextPolicy
+
+__all__ = ["ContextEngine", "ContextPolicy", "ContextItem", "SCHEMA_VERSION"]
