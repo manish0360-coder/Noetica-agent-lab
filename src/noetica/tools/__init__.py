@@ -1,8 +1,26 @@
-"""Noetica · tools (Constitution §6.12).
+"""Noetica · tools — Tool Runtime & Interface (§6.12).
 
-Tool Runtime & Interface — register/invoke/sandbox tools; async-capable. Domains implement concrete tools.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+The mechanism for registering, invoking, and sandboxing tools, with async non-blocking
+invocation (the reasoning loop must never block on a long solve). Concrete tools are
+wrapped external kernels owned by domains ("wrap, don't rebuild") — none here. PE-12
+provides `ToolRuntime`. Consumes the BudgetMeter interface (injected).
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.tools.runtime import (
+    DuplicateToolError,
+    ToolBudgetError,
+    ToolError,
+    ToolRuntime,
+    UnknownHandleError,
+    UnknownToolError,
+)
+
+__all__ = [
+    "ToolRuntime",
+    "ToolError",
+    "UnknownToolError",
+    "DuplicateToolError",
+    "ToolBudgetError",
+    "UnknownHandleError",
+]
