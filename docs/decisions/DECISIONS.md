@@ -91,3 +91,49 @@ record). v1.1 orders strictly by true dependency, ties broken by first-consumer 
 depth-only tiebreak (does not reflect that Episode is dependency-ready now and is the
 cohesive data-spine continuation).
 **Consequences.** PE-4 is Episode & Episode Store. Per-milestone verification unchanged.
+
+## DN-7 — Reasoning Runtime ownership boundary, injection, and the state blackboard (pre-PE-18)
+**Status:** Accepted. **Scope:** architecture hardening ratified before PE-18; no roadmap/
+dependency/interface/mechanism change.
+**Decision.** The ownership boundary of the Reasoning Runtime (§6.7) is fixed:
+- Reasoning OWNS only: (1) inference iteration; (2) search / backtracking; (3) retries;
+  (4) reasoning-loop control flow; (5) verification-seam *invocation* (the invocation point
+  of the Verifier protocol — not the protocol or oracle).
+- Reasoning explicitly does NOT own: planning (§6.8), reflection (§6.9), memory (§6.4),
+  knowledge (§6.5), Context ownership (§6.6 — it *consumes* Context), tool execution (§6.12),
+  State ownership (§6.1 — it *transforms* shared state, does not own the substrate), the
+  verification protocol/oracle (§6.11, Law 15), and the runtime lifecycle (§6.3/§6.18, PE-21).
+- **Tool and Skill capabilities are consumed ONLY through dependency injection, never by
+  direct import** (consistent with every Tier-2+ mechanism). Reasoning's declared import
+  dependencies remain **{State, Context, Router, Budget}** per Roadmap v1.1 (DN-6), unchanged.
+- The **State Substrate (§6.1) is the shared control plane (blackboard)** the Constitution
+  requires ("every other subsystem reads and writes it"; Principle 2; D9). Reasoning is a
+  control plane OVER the shared substrate (reads Context/State; writes results to State with
+  provenance) — never a control-flow homunculus.
+**Rationale.** Prevents the forbidden homunculus (§1.9, §6.7) and the mechanically-preventable
+cyclic dependencies of Law 9: owning Planning/Reflection/tool-execution would create
+Reasoning↔Planning / Reasoning↔Reflection cycles. Resolves independent-review claims 1, 3, 5.
+**Alternatives rejected.** Reasoning importing the Tool/Skill runtimes (over-coupling → use
+injection); Reasoning owning planning/reflection (homunculus + cycle); a strict
+all-messages-through-the-blackboard model (over-engineering — the Constitution requires
+state-centric transformations over a shared substrate, not that every call route through it).
+**Consequences.** PE-18 is built to this boundary. Enforced mechanically by DN-8 / FIX-1.
+
+## DN-8 — Mechanical intra-platform DAG enforcement (FIX-1)
+**Status:** Accepted.
+**Decision.** `tools/check_boundaries.py` gains `check_intra_platform_dag()`: each
+`src/noetica` subsystem may import `noetica.interfaces.*` and itself freely, and may import
+ANOTHER subsystem only if declared in the policy (`INTRA_ALLOWED`, derived from Roadmap v1.1 /
+DN-6). Any other cross-subsystem import **fails the build (fail-closed)**. The policy is
+self-checked for acyclicity, and every subsystem directory must have a policy entry (an
+undeclared directory fails). This mechanically prevents back-edges / cycles inside Noetica
+(Law 9, §11.10) — in particular `reasoning→planning`, `reasoning→reflection`,
+`planning→reflection`.
+**Rationale.** Closes the enforcement gap found in the pre-PE-18 review: the *layer* DAG
+(Noetica vs reference/domain) was enforced, but *intra-Noetica* subsystem acyclicity was not.
+§11.10 mandates mechanical enforcement of the DAG.
+**Alternatives rejected.** Relying on roadmap discipline alone (not fail-closed); ranking by
+PE number (PE order ≠ dependency order, e.g. `state` (PE-2) depends on `provenance` (PE-3) —
+the policy uses declared dependency adjacency instead).
+**Consequences.** Adds `tests/architecture/test_intra_platform_dag.py` with fail-closed proofs.
+No roadmap, interface, or mechanism change.
