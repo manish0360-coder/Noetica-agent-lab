@@ -35,3 +35,10 @@ boundary clean + fail-closed.
 ## Log (append below, newest last)
 
 <!-- New milestone entries are appended here. -->
+
+### PE-18 — reasoning (Reasoning Runtime, §6.7)
+- files: src/noetica/reasoning/{models,runtime,__init__}.py, README.md; tests/noetica/test_reasoning.py
+- impl: ReasoningRuntime (ReasoningLoop): infer→verify-seam→backtrack/retry; budget meta-control stop; state blackboard writes; context consumed. Form only.
+- deps: interfaces only (State/Context/Router/Budget/Verifier all injected — DN-7); no mechanism import; FIX-1 DAG clean.
+- boundaries: no planner/reflection/runtime-lifecycle/conversation/agent/homunculus/self-critique/domain.
+- verify: mypy 81 ok; 149 tests (8 new); 13 arch; boundary+intra-DAG clean.

@@ -1,8 +1,14 @@
-"""Noetica · reasoning (Constitution §6.7).
+"""Noetica · reasoning — Reasoning Runtime (§6.7). The FORM of reasoning only.
 
-Reasoning Runtime — the FORM of reasoning (loop, verification seams, backtrack); never domain content.
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+PE-18: `ReasoningRuntime` — iterate inference (Router), verification seam (Verifier),
+backtrack/retry within Budget, as a control plane over the State substrate (DN-7). Owns no
+planning/reflection/memory/knowledge/context/tool-execution/state/verification-oracle/
+runtime-lifecycle; capabilities are injected. No conversation loop / agent / homunculus /
+self-critique / domain logic.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.reasoning.models import ReasoningResult, ReasoningStep
+from noetica.reasoning.runtime import ReasoningRuntime
+
+__all__ = ["ReasoningRuntime", "ReasoningStep", "ReasoningResult"]
