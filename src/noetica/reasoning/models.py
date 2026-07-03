@@ -26,6 +26,7 @@ class ReasoningResult:
 
     goal: str
     success: bool
+    run_id: str
     steps: tuple[ReasoningStep, ...]
     final: ReasoningStep | None
     schema_version: str = SCHEMA_VERSION

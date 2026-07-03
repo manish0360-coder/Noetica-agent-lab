@@ -42,3 +42,11 @@ boundary clean + fail-closed.
 - deps: interfaces only (State/Context/Router/Budget/Verifier all injected — DN-7); no mechanism import; FIX-1 DAG clean.
 - boundaries: no planner/reflection/runtime-lifecycle/conversation/agent/homunculus/self-critique/domain.
 - verify: mypy 81 ok; 149 tests (8 new); 13 arch; boundary+intra-DAG clean.
+
+### PE-18.1 — reasoning review fixes (Board)
+- files: src/noetica/reasoning/{models,runtime}.py; tests/noetica/test_reasoning.py
+- fix1 non-sterile retries: prior candidate+raw verdict re-presented in next inference (deterministic, local; no self-critique/reflection).
+- fix2 blackboard collisions: per-run run_id; state keys reasoning:{run_id}:step:{i}; ReasoningResult.run_id; concurrent/historical runs preserved.
+- usability: default max_steps 1→3 (DEFAULT_MAX_STEPS); interface unchanged.
+- not done (Law 8): Tool/Skill injection deferred — no real consumer yet.
+- verify: mypy 81 ok; 151 tests (10 reasoning); 13 arch; boundary+intra-DAG clean.
