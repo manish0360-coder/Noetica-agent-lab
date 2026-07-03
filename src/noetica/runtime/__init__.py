@@ -1,8 +1,39 @@
-"""Noetica · runtime (Constitution §6.3).
+"""Noetica · runtime — Runtime & Agent Lifecycle (§6.3). The integrator (PE-21).
 
-Runtime & Agent Lifecycle — owns WHEN cognition proceeds (orchestration form, not a mind).
-
-Placeholder package: interface designed early; mechanism implemented only when a
-real consumer exists (Law 8 / §13.6). No implementation yet.
+Owns operation order only; owns no cognition. All mechanisms injected (DI). Drives the frozen
+state machine with a yield protocol + circuit breaker (max_steps + BudgetMeter). Reasoning
+never executes tools — cognition emits Tool/SkillRequest; the Runtime dispatches to the
+injected Tool/SkillRuntime and writes results to the State blackboard.
 """
-__all__: list[str] = []
+from __future__ import annotations
+
+from noetica.runtime.models import (
+    EpisodeHandle,
+    EpisodeState,
+    Propose,
+    RunResult,
+    SkillRequest,
+    Stop,
+    StepOutcome,
+    TerminalReason,
+    ToolRequest,
+    YieldSignal,
+)
+from noetica.runtime.runtime import DEFAULT_MAX_STEPS, Activation, Activator, Runtime
+
+__all__ = [
+    "Runtime",
+    "Activation",
+    "Activator",
+    "DEFAULT_MAX_STEPS",
+    "ToolRequest",
+    "SkillRequest",
+    "Propose",
+    "Stop",
+    "EpisodeHandle",
+    "EpisodeState",
+    "TerminalReason",
+    "YieldSignal",
+    "StepOutcome",
+    "RunResult",
+]

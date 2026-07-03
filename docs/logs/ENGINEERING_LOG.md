@@ -77,3 +77,10 @@ boundary clean + fail-closed.
 - fix1: §9 state machine adds DISPATCH state + §9.2 tool/skill orchestration — reasoning emits ToolRequest/SkillRequest (data), Runtime dispatches to injected Tool/SkillRuntime, writes result to substrate, resumes. DN-7 preserved. DI graph (§11) lists Tool/SkillRuntime.
 - fix2: §9.1 circuit breaker — every ACTIVATE re-entry bounded by BudgetMeter + step limit + Yield Protocol; no infinite oscillation. §16 adds circuit-breaker + tool/skill-orchestration tests.
 - unchanged: architecture, interfaces, mechanisms, DN-7, DN-8. No code.
+
+### PE-21 — runtime + sdk (Runtime, Agent Lifecycle & SDK, §6.3/§6.18)
+- files: src/noetica/runtime/{models,runtime,__init__}.py, README.md; src/noetica/sdk/{agent,__init__}.py, README.md; tests/noetica/{test_runtime,test_sdk}.py; tests/architecture/test_runtime_no_cognition.py
+- impl: Runtime (integrator) per frozen spec — start_episode/submit/end_episode (interface) + step/run drivers; state machine SETUP→GUARD→ACTIVATE→(DISPATCH tool/skill | VERIFY)→YIELD→PERSIST→TEARDOWN; DI of all mechanisms via interfaces; tool/skill dispatched by Runtime (reasoning emits ToolRequest/SkillRequest, DN-7); circuit breaker (max_steps+budget+yield); blackboard writes; episode persisted + memory.write (write-filter decides). SDK Agent wires injected ReasoningLoop→activator.
+- note: EpisodeHandle realized as episode_id (str) to satisfy frozen Runtime interface; internal handle keyed by id. No interface change.
+- boundaries: runtime/sdk import no reasoning/planning/reflection mechanism (arch test); no cognition implemented.
+- verify: mypy 89 ok; 181 tests (13 new); 15 arch (2 new anti-homunculus); boundary+intra-DAG clean.
