@@ -64,3 +64,10 @@ boundary clean + fail-closed.
 - deps: interfaces only (Verdict/Episode/State); revision feeds reasoning at consumer, not imported; FIX-1 DAG clean.
 - boundaries: self-critique only; no planning/reasoning ownership, no runtime/agent/loop/domain.
 - verify: mypy 86 ok; 168 tests (8 new); 13 arch; boundary+intra-DAG clean.
+
+### PE-21 (spec) — Runtime/SDK Design Specification (frozen; no code)
+- files: docs/specs/PE-21_DESIGN_SPEC.md
+- content: 18 sections (purpose..out-of-scope + impossibility proofs). Integrator/DI, condition-driven activation, blackboard, yield protocol, failure states, SDK surface.
+- proofs: cannot become homunculus/agent-brain/planner/reflection-engine/conversation-loop (DI + anti-cognition AST test + yield protocol + FIX-1).
+- conformance: handbook refs verified (6.3/6.7/6.16/6.18/Law17/1.6/6.11/7.5/Law20 exist). No conflict.
+- no implementation.
