@@ -84,3 +84,9 @@ boundary clean + fail-closed.
 - note: EpisodeHandle realized as episode_id (str) to satisfy frozen Runtime interface; internal handle keyed by id. No interface change.
 - boundaries: runtime/sdk import no reasoning/planning/reflection mechanism (arch test); no cognition implemented.
 - verify: mypy 89 ok; 181 tests (13 new); 15 arch (2 new anti-homunculus); boundary+intra-DAG clean.
+
+### FREEZE — Platform Engineering (PE-1..PE-21)
+- files: docs/reports/PLATFORM_ENGINEERING_FINAL_REPORT.md; docs/releases/RELEASE_NOTES_platform-engineering-v1.md
+- certification: mypy 89 clean; 181 tests; 15 arch; boundary+intra-DAG clean; 53 commits.
+- tag: platform-engineering-v1 (annotated) at HEAD.
+- gate review: PE-G1 gate NOT satisfied (needs a real world-model/twin consumer — Law 8/§11.8). Stop; no gated work opened.
