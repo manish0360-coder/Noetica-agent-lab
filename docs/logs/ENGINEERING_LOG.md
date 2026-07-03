@@ -71,3 +71,9 @@ boundary clean + fail-closed.
 - proofs: cannot become homunculus/agent-brain/planner/reflection-engine/conversation-loop (DI + anti-cognition AST test + yield protocol + FIX-1).
 - conformance: handbook refs verified (6.3/6.7/6.16/6.18/Law17/1.6/6.11/7.5/Law20 exist). No conflict.
 - no implementation.
+
+### PE-21 (spec) — Board fixes to Design Specification
+- files: docs/specs/PE-21_DESIGN_SPEC.md
+- fix1: §9 state machine adds DISPATCH state + §9.2 tool/skill orchestration — reasoning emits ToolRequest/SkillRequest (data), Runtime dispatches to injected Tool/SkillRuntime, writes result to substrate, resumes. DN-7 preserved. DI graph (§11) lists Tool/SkillRuntime.
+- fix2: §9.1 circuit breaker — every ACTIVATE re-entry bounded by BudgetMeter + step limit + Yield Protocol; no infinite oscillation. §16 adds circuit-breaker + tool/skill-orchestration tests.
+- unchanged: architecture, interfaces, mechanisms, DN-7, DN-8. No code.

@@ -70,23 +70,48 @@ Setup writes an episode context to the substrate with provenance; teardown persi
 episode and releases resources. Each milestone in the loop is a bounded, caller-pumped step.
 
 ## 9. Runtime state machine
-States: `IDLE, SETUP, GUARD_CHECK, ACTIVATE, YIELD, VERIFY, PERSIST, TEARDOWN, DONE, FAILED,
-HALTED`.
+States: `IDLE, SETUP, GUARD_CHECK, ACTIVATE, DISPATCH, YIELD, VERIFY, PERSIST, TEARDOWN,
+DONE, FAILED, HALTED`.
 ```
-IDLE        --start_episode-->            SETUP
-SETUP       --episode+provenance init-->  GUARD_CHECK
-GUARD_CHECK --allow-->                     ACTIVATE      | --deny(oversight)--> HALTED
-ACTIVATE    --dispatch injected mech.-->   YIELD         (condition-driven; §1.6)
-YIELD       --caller continue & budget ok & oversight ok--> GUARD_CHECK
-YIELD       --budget exhausted-->          TEARDOWN(reason=budget)
-YIELD       --oversight halt-->            HALTED
-ACTIVATE(submit) --verify(injected)-->     VERIFY
-VERIFY      --PASSED-->                     PERSIST       | --not passed--> YIELD (retry)
+IDLE        --start_episode-->             SETUP
+SETUP       --episode+provenance init-->   GUARD_CHECK
+GUARD_CHECK --allow-->                      ACTIVATE     | --deny(oversight)--> HALTED
+ACTIVATE    --dispatch injected cognition (reasoning/planning/reflection), condition-driven--> YIELD
+ACTIVATE    --cognition emits ToolRequest/SkillRequest (data, not execution)--> DISPATCH
+DISPATCH    --Runtime invokes injected ToolRuntime/SkillRuntime; writes result to substrate--> GUARD_CHECK
+ACTIVATE(submit) --verify(injected)-->      VERIFY
+VERIFY      --PASSED-->                      PERSIST     | --not passed--> YIELD (retry; bounded §9.1)
+YIELD       --caller pump & budget ok & step-limit ok & oversight ok--> GUARD_CHECK
+YIELD       --budget exhausted OR step-limit reached--> TEARDOWN(reason=budget|step_limit)
+YIELD       --oversight halt-->             HALTED
 PERSIST     --EpisodeStore + write-filter--> TEARDOWN
-TEARDOWN    --observability + release-->    DONE          | --infra fault--> FAILED
+TEARDOWN    --observability + release-->     DONE        | --infra fault--> FAILED
 ```
 Activation is **condition-driven** (external observation / internal inconsistency / active
 goal) and only **selects order**; the activated mechanism is an injected interface.
+
+### 9.1 Circuit breaker (bounded ACTIVATE cycles)
+Every transition back to `ACTIVATE` — a retry after a non-passing `VERIFY`, or a
+reflection-driven revision — is bounded by THREE independent limiters, any one of which
+terminates or yields the run before infinite oscillation:
+1. **BudgetMeter (§6.14):** `ACTIVATE` is entered only while the injected budget is not
+   exhausted; on exhaustion the Runtime goes to `TEARDOWN(reason=budget)`, never `ACTIVATE`.
+2. **Configured step limit (`max_steps`):** the retry/reflection loop halts at the limit ->
+   `TEARDOWN(reason=step_limit)`.
+3. **Yield Protocol (§14):** every cycle passes through `YIELD`, which is caller-pumped, so
+   the Runtime never self-drives; the caller/overseer may halt at any yield.
+If any limiter trips, the next state is `TEARDOWN` or `HALTED` — never `ACTIVATE`. Infinite
+retry/reflection oscillation is therefore impossible by construction.
+
+### 9.2 Tool/Skill orchestration (DN-7 preserved)
+**Reasoning NEVER executes tools or skills.** A cognitive mechanism *emits* a
+`ToolRequest`/`SkillRequest` value (a runtime-level request datum — not a change to any frozen
+PE-1 interface, and not execution) and returns control to the Runtime (`ACTIVATE -> DISPATCH`).
+The Runtime dispatches the request to the injected `ToolRuntime`/`SkillRuntime`, writes the
+result to the **State Substrate** under the `episode_id`/`run_id` namespace with provenance,
+then resumes the cognitive state machine (`DISPATCH -> GUARD_CHECK -> ACTIVATE`). Tool/skill
+execution is thus Runtime-orchestrated; cognition only requests — DN-7 ownership is intact
+(reasoning owns no tool execution).
 
 ## 10. SDK surface
 Versioned public surface (§6.18), stable contract:
@@ -101,7 +126,7 @@ Runtime is constructed with interface-typed references only; it stores and dispa
 constructs cognition:
 `StateSubstrate, Provenance(ledger), EpisodeStore, Observability, BudgetMeter, ModelRouter,
 Guardrail, MemoryStore + WriteFilter, ContextAssembler, ReasoningLoop, Planner, Executor,
-Reflector, Verifier`. Absent a mechanism, its activation branch is inert (fail-closed, §13).
+Reflector, Verifier, ToolRuntime, SkillRuntime`. Absent a mechanism, its activation branch is inert (fail-closed, §13).
 DI is the structural guarantee of "integrator, not homunculus."
 
 ## 12. Blackboard interaction
@@ -144,6 +169,11 @@ functions), §1.9 / §6.7 (not a homunculus; form not mind), Principle 2 / D9 (s
   autonomous loop; every run is bounded and yields.
 - **Blackboard test:** episode state is written to the substrate (provenance + `episode_id`
   namespace), not held as domain state in the runtime.
+- **Circuit-breaker test:** retry/reflection cycles terminate/yield within budget and the
+  configured step limit; no run reaches `ACTIVATE` unbounded (no infinite oscillation).
+- **Tool/Skill-orchestration test:** cognition emits a request; the Runtime dispatches to the
+  injected ToolRuntime/SkillRuntime and writes the result to the substrate; reasoning executes
+  no tool/skill (DN-7).
 - Fresh-clone green with one command (§13.4).
 
 ## 17. Out-of-scope
