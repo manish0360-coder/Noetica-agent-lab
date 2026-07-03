@@ -50,3 +50,10 @@ boundary clean + fail-closed.
 - usability: default max_steps 1→3 (DEFAULT_MAX_STEPS); interface unchanged.
 - not done (Law 8): Tool/Skill injection deferred — no real consumer yet.
 - verify: mypy 81 ok; 151 tests (10 reasoning); 13 arch; boundary+intra-DAG clean.
+
+### PE-19 — planning (Planning Runtime, §6.8)
+- files: src/noetica/planning/{models,planner,executor,__init__}.py, README.md; tests/noetica/test_planning.py
+- impl: SequentialPlanner (Plan repr; default single `reason` step, injectable step_source); SequentialExecutor (sequences steps over State blackboard; `reason` delegates to injected ReasoningLoop; reflection SEAM hook for PE-20; per-run run_id keys). Form only.
+- deps: interfaces only (Reasoning/State injected — DN-7); FIX-1 DAG clean.
+- boundaries: no domain plans/actions, no reflection impl, no runtime lifecycle.
+- verify: mypy 84 ok; 160 tests (9 new); 13 arch; boundary+intra-DAG clean.
