@@ -44,6 +44,7 @@ Does not decide *what* to think — only *when* activation proceeds.
 | Observability emission points (§6.17) | Verification oracle (§6.11, Law 15 — domain) |
 | SDK surface + plugin registration (§6.18) | Model calls (§6.15 — injected `ModelRouter`) |
 | Yield protocol | State substrate ownership (§6.1 — it transforms, not owns) |
+| Tool/Skill **dispatch orchestration** (§6.12/§6.13) | Tool/Skill execution (injected `ToolRuntime`/`SkillRuntime`); cognition only *emits requests* |
 
 ## 5. Inputs
 Goal/task; the injected mechanism set (DI graph, §11); a configured `BudgetMeter`; an
