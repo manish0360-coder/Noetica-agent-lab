@@ -57,3 +57,10 @@ boundary clean + fail-closed.
 - deps: interfaces only (Reasoning/State injected — DN-7); FIX-1 DAG clean.
 - boundaries: no domain plans/actions, no reflection impl, no runtime lifecycle.
 - verify: mypy 84 ok; 160 tests (9 new); 13 arch; boundary+intra-DAG clean.
+
+### PE-20 — reflection (Reflection, §6.9)
+- files: src/noetica/reflection/{models,reflector,__init__}.py, README.md; tests/noetica/test_reflection.py
+- impl: GroundedReflector.reflect(attempt,outcome)->Revision; grounded (verdict-based) critique, deterministic, never LLM-as-judge; injectable CritiqueStrategy (Law 7 promotion seam); optional State blackboard write w/ provenance + run_id.
+- deps: interfaces only (Verdict/Episode/State); revision feeds reasoning at consumer, not imported; FIX-1 DAG clean.
+- boundaries: self-critique only; no planning/reasoning ownership, no runtime/agent/loop/domain.
+- verify: mypy 86 ok; 168 tests (8 new); 13 arch; boundary+intra-DAG clean.
