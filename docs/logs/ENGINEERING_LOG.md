@@ -90,3 +90,8 @@ boundary clean + fail-closed.
 - certification: mypy 89 clean; 181 tests; 15 arch; boundary+intra-DAG clean; 53 commits.
 - tag: platform-engineering-v1 (annotated) at HEAD.
 - gate review: PE-G1 gate NOT satisfied (needs a real world-model/twin consumer — Law 8/§11.8). Stop; no gated work opened.
+
+### DOC — PROJECT_STATE + README parity
+- files: docs/PROJECT_STATE.md (new, canonical); README.md (Status: skeleton -> COMPLETE & FROZEN, Law 18 parity).
+- content: full journey (audit, transformation M0-M6/M3.5, PE-1..21, DN-1..8/FIX-1, freeze), frozen status, gated PE-G1..G5, artifacts/tags.
+- docs only; no code/architecture/gated change.

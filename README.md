@@ -11,11 +11,14 @@ manufacturing content, no domain verifier/oracle, and no central "mind"
 
 ## Status
 
-**Pre-implementation platform skeleton.** The canonical structure, interface namespace,
-and constitutional boundaries exist and are mechanically enforced. Mechanisms are **not**
-built speculatively: each is added only when a real consumer needs it and a credible
-second is on the horizon — the platform **grows by extraction** (Law 8, §13.6). Empty
-subsystem packages are honest placeholders, never stubs pretending to work.
+**Platform Engineering COMPLETE & FROZEN** (tag `platform-engineering-v1`). Every
+Constitution Part VI mechanism has a default implementation (PE-1 … PE-21), built strictly by
+dependency depth and grown without speculation (Law 8). Certified: `mypy --strict` clean
+(89 files), **181 tests**, **15 architecture tests**, boundary + intra-platform DAG clean.
+Gated mechanisms (PE-G1 … PE-G5) are deferred until their consumer/validation gate is met.
+
+Full state: **`docs/PROJECT_STATE.md`** · final report:
+**`docs/reports/PLATFORM_ENGINEERING_FINAL_REPORT.md`**.
 
 See **`ROADMAP.md`** for the sequence, **`docs/registry/PRIMITIVE_REGISTRY.md`** for what
 (if anything) has been promoted/extracted, and **`docs/decisions/DECISIONS.md`** for the
