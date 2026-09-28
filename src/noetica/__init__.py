@@ -10,3 +10,6 @@ consumer requires it (grow-by-extraction, Law 8 / §13.6). An empty package is a
 honest placeholder, never a stub pretending to work.
 """
 __all__: list[str] = []
+
+# The package release version (DN-9): the single source of truth read by the build backend.
+__version__ = "1.0.0"

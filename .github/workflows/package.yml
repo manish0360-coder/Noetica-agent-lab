@@ -1,0 +1,28 @@
+name: Package build and install
+
+# DN-9 release gate: on every supported Python, the full platform suite passes from the source
+# tree, and the `noetica` wheel builds, installs into a clean virtual environment, imports its
+# whole public surface without the repository on sys.path, and passes the platform behaviour
+# tests against the installed wheel (tools/verify_installed_wheel.py). Packaging only.
+on:
+  push:
+  pull_request:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Platform test suite (source tree)
+        run: |
+          python -m pip install --quiet pytest
+          python -m pytest -q
+      - name: Wheel build, clean install, public import, tests against the installed wheel
+        run: python tools/verify_installed_wheel.py

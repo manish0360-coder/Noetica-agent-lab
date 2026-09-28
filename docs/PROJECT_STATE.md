@@ -3,7 +3,7 @@
 **Project:** Noetica (Layer 2 — Agent Intelligence Platform).
 **Authority:** Handbook v1.1 (frozen). **Living status record;** updated at milestone/phase boundaries.
 **Current phase:** Platform Engineering — **COMPLETE & FROZEN**.
-**HEAD:** `e34975c` · **Freeze tag:** `platform-engineering-v1`.
+**Freeze tag:** `platform-engineering-v1` · **Package release:** `noetica` 1.0.0, tag `v1.0.0` (DN-9).
 **Workflow:** Manufacturing Pipeline (Research → Architecture → Manufacturing → QA → Freeze → Gate Review).
 
 ---
@@ -80,6 +80,12 @@ Final report + release notes produced; tagged `platform-engineering-v1`.
   imports (Law 4/5, D11); mechanism-vs-content (Law 3); verifier oracle is domain / self-tests
   use ReferenceVerifier (Law 15/20); immutable oversight (Law 17); versioned data contracts (Law 21);
   experiment integrity A1≡A2 retriever (D7); reasoning ownership/no-homunculus (DN-7).
+- **Package (DN-9):** Noetica is an installable versioned package, `noetica` 1.0.0 (tag `v1.0.0`),
+  and the platform surface is unchanged.
+  - Build: standard PEP 517 wheel, hatchling 1.32.4 pinned, standard library only, PEP 561 typed.
+  - Python: ≥ 3.10, tested on 3.10–3.14.
+  - Gate: `tools/verify_installed_wheel.py` and CI `package.yml`.
+  - Not yet consumed by Velith or Mini Prometheus.
 
 ## 4. Deferred (gated — NOT built, Law 8/§11.8)
 - **PE-G1** World-Model / Twin Engine — gate: a real world-model/twin consumer.
@@ -101,4 +107,4 @@ nothing promoted yet) · Spec `docs/specs/PE-21_DESIGN_SPEC.md` · Report `docs/
 · Log `docs/logs/ENGINEERING_LOG.md`.
 
 **Tags:** `pre-noetica-transform` · `repo-transformation-complete` · `pe-roadmap-v1` · `pe-roadmap-v1.1`
-· `platform-engineering-v1`.
+· `platform-engineering-v1` · `v1.0.0` (package release).

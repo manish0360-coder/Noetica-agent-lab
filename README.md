@@ -17,12 +17,31 @@ dependency depth and grown without speculation (Law 8). Certified: `mypy --stric
 (89 files), **181 tests**, **15 architecture tests**, boundary + intra-platform DAG clean.
 Gated mechanisms (PE-G1 … PE-G5) are deferred until their consumer/validation gate is met.
 
+**Noetica is now an installable versioned package:** `noetica` **1.0.0** (tag `v1.0.0`, DN-9) is the
+frozen `platform-engineering-v1` surface, packaged unchanged. It is not yet consumed by Velith or Mini
+Prometheus, and no cognitive mechanism has been promoted into it (the Primitive Registry is empty).
+
 Full state: **`docs/PROJECT_STATE.md`** · final report:
 **`docs/reports/PLATFORM_ENGINEERING_FINAL_REPORT.md`**.
 
 See **`ROADMAP.md`** for the sequence, **`docs/registry/PRIMITIVE_REGISTRY.md`** for what
 (if anything) has been promoted/extracted, and **`docs/decisions/DECISIONS.md`** for the
 Noetica decision ledger.
+
+## Install
+
+`noetica` 1.0.0 uses the standard library only, needs Python ≥ 3.10 (tested on 3.10–3.14), and ships
+PEP 561 type information. It is not on PyPI; consumers pin the release tag:
+
+```
+pip install "noetica @ git+https://github.com/manish0360-coder/Noetica-agent-lab@v1.0.0"
+```
+
+The public surface is `noetica` and its subsystem packages (`noetica.interfaces`, `noetica.state`,
+`noetica.provenance`, … `noetica.sdk`). To build and verify locally:
+`python -m pip wheel . --no-deps -w dist` and `python tools/verify_installed_wheel.py`. The verifier
+builds and audits the wheel, installs it into a clean virtual environment, and runs the platform tests
+against the installed package.
 
 ## Repository structure
 
@@ -55,6 +74,8 @@ CI fails the build (`.github/workflows/constitution.yml`) if any of these break:
 - `reference/` becomes executable platform code (it is excluded from the test suite)
 
 Run locally: `python tools/check_boundaries.py` · tests: `pytest tests/architecture`.
+The package gate (`.github/workflows/package.yml`, Python 3.10–3.14) runs the full suite and
+`tools/verify_installed_wheel.py`.
 
 ## What Noetica is not
 

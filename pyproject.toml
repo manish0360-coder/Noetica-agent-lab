@@ -1,0 +1,40 @@
+# Noetica package metadata (DN-9). Packaging only: the platform source, its interfaces and its
+# semantics are unchanged. Runtime dependencies: none (standard library only).
+
+[build-system]
+requires = ["hatchling==1.32.4"]  # pinned build backend: deterministic package metadata
+build-backend = "hatchling.build"
+
+[project]
+name = "noetica"
+dynamic = ["version"]  # single source of truth: noetica.__version__ (src/noetica/__init__.py)
+description = "Noetica — the domain-agnostic Agent Intelligence Platform (Layer 2 of the MiniFlyWire → Noetica → Velith → Mini Prometheus ecosystem)."
+readme = "README.md"
+# Floor from the source: a runtime PEP 604 union (runtime/runtime.py `Activation`) needs 3.10;
+# the full suite fails on 3.9 and passes on 3.10-3.14 (all tested in CI, package.yml).
+requires-python = ">=3.10"
+dependencies = []
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
+]
+
+[tool.hatch.version]
+path = "src/noetica/__init__.py"
+
+# The wheel ships exactly the platform package (src/noetica, incl. the PEP 561 py.typed marker).
+# tests/, tools/, docs/, reference/, examples/, configs/ and plugins/ are never packaged.
+[tool.hatch.build.targets.wheel]
+packages = ["src/noetica"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/noetica",
+    "tests",
+    "tools",
+    "conftest.py",
+    "pytest.ini",
+    "pyproject.toml",
+    "README.md",
+]

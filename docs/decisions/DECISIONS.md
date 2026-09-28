@@ -137,3 +137,39 @@ PE number (PE order ≠ dependency order, e.g. `state` (PE-2) depends on `proven
 the policy uses declared dependency adjacency instead).
 **Consequences.** Adds `tests/architecture/test_intra_platform_dag.py` with fail-closed proofs.
 No roadmap, interface, or mechanism change.
+
+## DN-9 — Publish Noetica as the installable, versioned package `noetica` 1.0.0
+**Status:** Accepted. **Date:** 2026-09-28. **Authority:** human approval — the project owner's
+instruction of 2026-09-28 relaying the Director's ruling. Under Law 22 an AI contributor recommends
+and a human ratifies.
+
+**Decision.** The frozen `platform-engineering-v1` platform is published, **unchanged**, as the Python
+package `noetica` **1.0.0**, tagged `v1.0.0`.
+- Standard PEP 517 build: `pyproject.toml`, with hatchling pinned to 1.32.4.
+- The wheel ships exactly `src/noetica` plus a PEP 561 `py.typed` marker. It has no runtime dependency.
+- **`requires-python >= 3.10`**, the floor the source itself sets: the runtime PEP 604 union
+  `Activation` in `runtime/runtime.py` needs 3.10. The suite fails on 3.9 and passes on 3.10–3.14.
+- **Version 1.0.0.** The `platform-engineering-v1` release notes freeze the interface surface ("changes
+  require a superseding decision / CAP"), which is exactly what SemVer 1.0.0 states. `noetica.__version__`
+  is the version's single source.
+- The **public surface is unchanged**: `noetica` and its 22 packages (the 21 Part VI subsystems and
+  `interfaces`). Nothing is re-exported, renamed or removed.
+
+**Rationale.** Velith (the first consumer and extraction source, N.3) and Mini Prometheus may consume
+Noetica only as a pinned package (Velith D30; Mini Prometheus CAP-0001 Field 8). Without a package,
+consumption would need source-path coupling, which the Constitution forbids.
+
+**Alternatives rejected.**
+- A 0.x version: it would declare the frozen surface unstable.
+- `>=3.9`: the suite fails on 3.9.
+- `>=3.11` or `>=3.12`: narrower than the source supports, for no reason.
+- Vendoring, or installing from source paths.
+
+**Consequences.**
+- New release gate `tools/verify_installed_wheel.py` and CI workflow `package.yml` (Python 3.10–3.14).
+  The gate builds and audits the wheel, installs it into a clean environment, imports the whole
+  surface without the repository on `sys.path`, and runs the behaviour tests against the installed
+  wheel.
+- Interfaces, mechanisms, tests, boundaries and the Primitive Registry are unchanged.
+- Consumers pin `noetica @ git+https://github.com/manish0360-coder/Noetica-agent-lab@v1.0.0`.
+- Not integrated with Velith or Mini Prometheus yet; that is theirs to do.
